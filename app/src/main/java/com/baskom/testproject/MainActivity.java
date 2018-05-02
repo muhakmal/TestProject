@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,54 +14,30 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.ramotion.foldingcell.FoldingCell;
 import com.yalantis.jellytoolbar.listener.JellyListener;
 import com.yalantis.jellytoolbar.widget.JellyToolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
-    int flag = 0;
     private static final String TEXT_KEY = "text";
     private JellyToolbar toolbar;
     private AppCompatEditText editText;
-    private JellyListener jellyListener = new JellyListener() {
-        @Override
-        public void onToolbarExpandingStarted() {
-            super.onToolbarExpandingStarted();
-            toolbar.setContentView(editText);
-            editText.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            flag = 1;
-        }
 
-        @Override
-        public void onToolbarCollapsed() {
-            super.onToolbarCollapsed();
-
-        }
-
-        @Override
-        public void onCancelIconClicked() {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (TextUtils.isEmpty(editText.getText())) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                toolbar.collapse();
-                flag = 0;
-            } else {
-                editText.getText().clear();
-            }imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    };
+    int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ;
+        final FoldingCell mFoldingCell = findViewById(R.id.folding_cell);
+        toolbar = findViewById(R.id.toolbar);
 
-        toolbar = (JellyToolbar) findViewById(R.id.toolbar);
         toolbar.setJellyListener(jellyListener);
         toolbar.getToolbar().setPadding(0, getStatusBarHeight(), 0, 0);
-
         editText = (AppCompatEditText) LayoutInflater.from(this).inflate(R.layout.edit_text, null);
         editText.setBackgroundResource(R.color.colorTransparent);
         editText.setOnKeyListener(new View.OnKeyListener() {
@@ -80,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        mFoldingCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFoldingCell.toggle(false);
+            }
+        });
     }
 
     private int getStatusBarHeight() {
@@ -90,6 +75,37 @@ public class MainActivity extends AppCompatActivity {
         }
         return result;
     }
+
+    private JellyListener jellyListener = new JellyListener() {
+        @Override
+        public void onToolbarExpandingStarted() {
+            super.onToolbarExpandingStarted();
+            toolbar.setContentView(editText);
+            editText.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            flag = 1;
+        }
+
+        @Override
+        public void onToolbarCollapsed() {
+            super.onToolbarCollapsed();
+        }
+
+        @Override
+        public void onCancelIconClicked() {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (TextUtils.isEmpty(editText.getText())) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                toolbar.collapse();
+                flag = 0;
+            } else {
+                editText.getText().clear();
+            }
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    };
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

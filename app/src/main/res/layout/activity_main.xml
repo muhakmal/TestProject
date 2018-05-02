@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:folding-cell="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.yalantis.jellytoolbar.widget.JellyToolbar
@@ -18,21 +19,44 @@
         app:title="@string/str_news_feed"
         app:titleTextColor="@android:color/white" />
 
-    <ScrollView
+    <com.ramotion.foldingcell.FoldingCell xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_margin="10dp"
+        android:id="@+id/folding_cell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/cell_content_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:background="@drawable/radius_folding_cell_expand"
+            android:visibility="gone">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CIEH" />
+                android:id="@+id/catering_name"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="10dp"
+                android:text="NAH INI DIA"
+                android:textColor="@color/nliveo_white" />
+        </RelativeLayout>
+        ​
 
-        </LinearLayout>
-    </ScrollView>
+        <RelativeLayout
+            android:id="@+id/cell_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_folding_cell">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:text="HAYO INI APA"
+                android:textColor="@color/nliveo_white" />
+        </RelativeLayout>
+        ​
+    </com.ramotion.foldingcell.FoldingCell>
+
+
 </LinearLayout>

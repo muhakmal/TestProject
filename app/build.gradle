@@ -28,4 +28,5 @@ dependencies {
     //JellyToolbar
     implementation 'com.github.yalantis:jellytoolbar:v1.0'
     implementation 'br.com.liveo:navigationdrawer-material:2.5.1'
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
 }
